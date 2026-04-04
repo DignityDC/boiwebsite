@@ -43,7 +43,7 @@ const divisions = [
     color: 'text-zinc-300 border-zinc-300/30 bg-zinc-300/10',
     glow:  'hover:border-zinc-300/50',
     icon:  Eye,
-    desc:  'The in-game integrity arm of the Bureau. FID oversees all active scenes in the field to ensure officers are conducting themselves with professionalism and proper procedure.',
+    desc:  'A roleplay-focused division within the Bureau. Members may be activated as FID during scenes to observe and help elevate roleplay quality, encouraging realistic behavior and smoother interactions without holding direct authority over others.',
   },
 ];
 
