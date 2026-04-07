@@ -175,7 +175,7 @@ const sops = [
     sections: [
       {
         heading: '7.1, Who’s in Charge',
-        body: `The Bureau is led by the Director of Operations, followed by Deputy director and this is explained more in https://discord.com/channels/1488518595125444710/1488519700651577405`,
+        body: `The Bureau is led by the Director of Operational Integrity, followed by the Deputy Director of Operational Integrity, and this is explained more in our official Discord.`,
       },
       {
         heading: '7.2, Authority',
