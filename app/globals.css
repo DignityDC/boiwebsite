@@ -96,8 +96,13 @@ body {
 .fade-bottom { mask-image: linear-gradient(to top,   transparent, black 30%); }
 
 /* ─── Marquee ticker ────────────────────────── */
-.ticker-wrap    { overflow: hidden; white-space: nowrap; }
-.ticker-content { display: inline-block; animation: ticker 40s linear infinite; }
+.ticker-wrap    { overflow: hidden; white-space: nowrap; display: flex; }
+.ticker-content { display: flex; flex-shrink: 0; min-width: 100%; animation: ticker 35s linear infinite; }
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
 
 /* ─── Form inputs ───────────────────────────── */
 .form-input {
