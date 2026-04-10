@@ -11,7 +11,7 @@ export async function POST(request) {
   const { username, discordId, age, rank, experience, reason, additional } = body;
 
   const embed = {
-    title: '📋 New BOI Application',
+    title: 'New BOI Application',
     color: 0xc9a228,
     fields: [
       { name: 'Username',           value: username    || 'N/A', inline: true  },
