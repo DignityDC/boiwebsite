@@ -5,15 +5,9 @@ import { motion } from 'framer-motion';
 import { Send, AlertCircle, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 
-const divisions = [
-  'Office of Internal Affairs (OIA)',
-  'Field Integrity Division (FID)',
-  'No Preference, Assign at Leadership Discretion',
-];
-
 const EMPTY = {
   username: '', discordId: '', age: '', rank: '',
-  experience: '', reason: '', division: '', additional: '',
+  experience: '', reason: '', additional: '',
 };
 
 export default function ApplicationForm() {
@@ -34,7 +28,6 @@ export default function ApplicationForm() {
     if (!form.age.trim())        errs.age        = 'Age is required';
     if (!form.experience.trim()) errs.experience = 'Experience is required';
     if (!form.reason.trim())     errs.reason     = 'This field is required';
-    if (!form.division)          errs.division   = 'Please select a division preference';
     return errs;
   };
 
@@ -130,24 +123,6 @@ export default function ApplicationForm() {
               <div className="grid sm:grid-cols-2 gap-5">
                 <Field label="Age *" name="age" placeholder="Your age" type="number" value={form.age} onChange={update} error={errors.age} />
                 <Field label="Current Rank / Role" name="rank" placeholder="If applicable" value={form.rank} onChange={update} error={errors.rank} />
-              </div>
-
-              {/* Division select */}
-              <div>
-                <label className="form-label">Division Preference *</label>
-                <select
-                  name="division"
-                  value={form.division}
-                  onChange={update}
-                  className="form-input appearance-none"
-                  style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a228' strokeWidth='1.5' fill='none'/%3E%3C/svg%3E\")", backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center' }}
-                >
-                  <option value="" disabled>Select a division…</option>
-                  {divisions.map((d) => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
-                {errors.division && <FieldError msg={errors.division} />}
               </div>
 
               {/* Experience */}
