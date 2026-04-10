@@ -8,7 +8,7 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 });
   }
 
-  const { username, discordId, age, rank, experience, reason, division, additional } = body;
+  const { username, discordId, age, rank, experience, reason, additional } = body;
 
   const embed = {
     title: '📋 New BOI Application',
@@ -18,7 +18,6 @@ export async function POST(request) {
       { name: 'Discord ID',         value: discordId   || 'N/A', inline: true  },
       { name: 'Age',                value: age         || 'N/A', inline: true  },
       { name: 'Current Rank / Role',value: rank        || 'N/A', inline: true },
-      { name: 'Division Preference',value: division    || 'N/A', inline: false },
       { name: 'Operational Experience', value: experience || 'N/A', inline: false },
       { name: 'Reason for Applying',    value: reason     || 'N/A', inline: false },
       ...(additional?.trim()
