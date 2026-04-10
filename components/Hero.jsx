@@ -192,11 +192,16 @@ export default function Hero() {
       </div>
 
       {/* ── Ticker ── */}
-      <div className="relative z-10 border-t border-boi-border bg-boi-bg-2/80 backdrop-blur-sm py-2.5 overflow-hidden">
-        <div className="ticker-content font-mono text-[10px] tracking-widest text-boi-gold/50 uppercase whitespace-nowrap">
-          {ticker.join('  \u00A0\u00A0  ')}
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          {ticker.join('  \u00A0\u00A0  ')}
+      <div className="relative z-10 border-t border-boi-border bg-boi-bg-2/80 backdrop-blur-sm py-2.5 ticker-wrap">
+        <div className="ticker-content font-mono text-[10px] tracking-widest text-boi-gold/50 uppercase">
+          {ticker.map((t, i) => (
+            <span key={i} className="mx-6">{t}</span>
+          ))}
+        </div>
+        <div className="ticker-content font-mono text-[10px] tracking-widest text-boi-gold/50 uppercase" aria-hidden>
+          {ticker.map((t, i) => (
+            <span key={i} className="mx-6">{t}</span>
+          ))}
         </div>
       </div>
 
