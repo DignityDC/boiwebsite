@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 
 const eligible = [
-  { text: 'Must hold the rank of Supervisor or above within JDO.' },
+  { text: 'Must hold a position in any department within JDO.' },
   { text: 'Must be consistently active within the department.' },
   { text: 'Must have no punishments within the last month.' },
   { text: 'Must be professional at all times, in all environments.' },
@@ -15,9 +15,9 @@ const eligible = [
 
 const disqualifying = [
   { text: 'Any active or recent punishment within the past month.' },
-  { text: 'Rank below Supervisor within JDO.' },
+  { text: 'Not being a member of a department' },
   { text: 'Under 15 years of age.' },
-  { text: 'History of powertriping or abusive conduct toward officers.' },
+  { text: 'History of powertripping or abusive conduct toward officers.' },
   { text: 'Lack of support from existing department heads.' },
 ];
 
