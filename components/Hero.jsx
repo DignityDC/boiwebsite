@@ -19,6 +19,7 @@ const ticker = [
   '// DISCIPLINE',
   '// DEDICATION',
   '// ORDER',
+  '// DIGNITY',
   '// DUTY',
 ];
 
