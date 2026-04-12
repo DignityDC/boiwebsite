@@ -5,6 +5,10 @@ export const metadata = {
   description:
     'The Bureau of Operational Integrity, Defending Order. Ensuring Trust. Upholding Integrity.',
   keywords: 'BOI, Bureau of Operational Integrity, Operations, Integrity',
+  icons: {
+    icon: '/boi-seal.png',
+    apple: '/boi-seal.png',
+  },
 };
 
 export default function RootLayout({ children }) {
