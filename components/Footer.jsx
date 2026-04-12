@@ -50,7 +50,7 @@ export default function Footer() {
             together, from the inside out.
           </p>
           <div className="font-mono text-[9px] tracking-widest text-boi-gold/50 uppercase border border-boi-border px-3 py-2 inline-block">
-            EST. MMXXIV
+            EST. MMXXVI
           </div>
         </div>
 
