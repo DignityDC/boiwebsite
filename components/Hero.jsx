@@ -135,7 +135,7 @@ export default function Hero() {
           animate="visible"
           className="font-mono text-xs tracking-[0.28em] text-boi-muted uppercase mb-6"
         >
-          B . O . I . &nbsp;,&nbsp; ESTABLISHED MMXXIV
+          B . O . I . &nbsp;,&nbsp; ESTABLISHED MMXXVI
         </motion.div>
 
         {/* Tagline */}
