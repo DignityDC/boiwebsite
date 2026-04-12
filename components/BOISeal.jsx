@@ -149,7 +149,7 @@ export default function BOISeal({ size = 200, className = '' }) {
         letterSpacing={size * 0.01}
         opacity="0.75"
       >
-        EST. MMXXIV
+        EST. MMXXVI
       </text>
     </svg>
   );
