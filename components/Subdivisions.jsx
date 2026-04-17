@@ -40,10 +40,10 @@ const divisions = [
     name:  'Field Integrity Division',
     req:   'BOI Member',
     seal:  '/fid-seal.png',
-    color: 'text-zinc-300 border-zinc-300/30 bg-zinc-300/10',
-    glow:  'hover:border-zinc-300/50',
+    color: 'text-yellow-500 border-yellow-500/30 bg-yellow-500/10',
+    glow:  'hover:border-yellow-500/50',
     icon:  Eye,
-    desc:  'A roleplay-focused division within the Bureau. Members may be activated as FID during scenes to observe and help elevate roleplay quality, encouraging realistic behavior and smoother interactions without holding direct authority over others.',
+    desc:  'The in-game integrity arm of the Bureau. FID oversees all active scenes in the field to ensure officers are conducting themselves with professionalism and proper procedure.',
   },
 ];
 
