@@ -13,7 +13,7 @@ const cards = [
   {
     icon: Eye,
     num:  '02',
-    title: 'Oversee Reports',
+    title: 'Handle Reports',
     body:  'We handle officer reports to ensure they are being processed fairly and without bias. Accountability applies to the process, not just the outcome.',
   },
   {
