@@ -29,8 +29,8 @@ const steps = [
     num:   '04',
     icon:  BadgeCheck,
     title: 'Onboarding & Placement',
-    body:  'Accepted personnel receive a full Bureau onboarding brief, clearance assignment, and are deployed to their designated division. We do not leave personnel waiting.',
-    sub:   'Division assigned at intake',
+    body:  'Accepted personnel receive a full Bureau onboarding brief and clearance assignment. You will be integrated into the Bureau immediately. We do not leave personnel waiting.',
+    sub:   'Onboarded at intake',
   },
 ];
 
