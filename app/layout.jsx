@@ -1,4 +1,5 @@
 import './globals.css';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'Bureau of Operational Integrity | BOI',
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className="bg-boi-bg text-boi-text antialiased font-sans" suppressHydrationWarning>
         {children}
+        <Analytics />
       </body>
     </html>
   );
