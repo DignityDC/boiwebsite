@@ -19,7 +19,6 @@ const ticker = [
   '// DISCIPLINE',
   '// DEDICATION',
   '// ORDER',
-  '// DIGNITY',
   '// DUTY',
 ];
 
@@ -212,7 +211,7 @@ export default function Hero() {
         animate={{ opacity: 1, y: [0, 8, 0] }}
         transition={{ opacity: { delay: 1.5 }, y: { duration: 2, repeat: Infinity, ease: 'easeInOut' } }}
         onClick={() => scrollTo('#about')}
-        className="absolute bottom-20 left-1/2 -translate-x-1/2 text-boi-gold/40 hover:text-boi-gold transition-colors z-10"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-boi-gold/40 hover:text-boi-gold transition-colors z-10"
       >
         <ChevronDown size={24} />
       </motion.button>
