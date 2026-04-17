@@ -4,21 +4,20 @@ import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 
 const eligible = [
-  { text: 'Must hold a position in any department within JDO.' },
+  { text: 'Must hold the rank of Supervisor or above within JDO.' },
   { text: 'Must be consistently active within the department.' },
   { text: 'Must have no punishments within the last month.' },
   { text: 'Must be professional at all times, in all environments.' },
   { text: 'Must be 15 years of age or older.' },
   { text: 'Must be well-regarded within the JDO community.' },
-  { text: 'Department heads must agree you meet the standard to join BOI.' },
+  { text: 'Department heads should agree you meet the standard to join BOI.' },
 ];
 
 const disqualifying = [
   { text: 'Any active or recent punishment within the past month.' },
-  { text: 'Not being a member of a department' },
+  { text: 'Rank below Supervisor within JDO.' },
   { text: 'Under 15 years of age.' },
-  { text: 'History of powertripping or abusive conduct toward officers.' },
-  { text: 'Lack of support from existing department heads.' },
+  { text: 'History of powertriping or abusive conduct toward officers.' },
 ];
 
 const preferred = [
