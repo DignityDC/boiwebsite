@@ -34,8 +34,13 @@ export default function PrivacyPage() {
 
         <div className="space-y-8 text-boi-muted text-sm leading-relaxed">
           <div>
-            <h2 className="font-mono text-xs tracking-widest text-boi-gold uppercase mb-3">Data Collection</h2>
-            <p>The Bureau of Operational Integrity does not collect, store, or process any personal data. This website does not use cookies, tracking scripts, analytics services, or any form of data collection technology.</p>
+            <h2 className="font-mono text-xs tracking-widest text-boi-gold uppercase mb-3">Analytics & Data Collection</h2>
+            <p>This website uses Vercel Web Analytics to collect anonymous, aggregated data about site traffic. The information collected may include: page views, general geographic region (country-level only), browser type, operating system, device type, and referral source. This data is entirely non-personal — it cannot be used to identify any individual visitor. No names, IP addresses, or personally identifiable information are stored or associated with this data.</p>
+          </div>
+
+          <div>
+            <h2 className="font-mono text-xs tracking-widest text-boi-gold uppercase mb-3">Cookies & Tracking</h2>
+            <p>This website does not use cookies or persistent tracking scripts. Vercel Analytics operates without cookies and does not build profiles on individual users.</p>
           </div>
 
           <div>
@@ -45,7 +50,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="font-mono text-xs tracking-widest text-boi-gold uppercase mb-3">Third-Party Services</h2>
-            <p>This site does not integrate with any third-party advertising, analytics, or tracking platforms. No data is shared with or sold to any external parties.</p>
+            <p>This site uses Vercel as its hosting and analytics provider. Vercel's data practices are governed by their own privacy policy. No data is shared with or sold to any advertising platforms or other external parties.</p>
           </div>
 
           <div>
