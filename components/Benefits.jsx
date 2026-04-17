@@ -14,7 +14,7 @@ const benefits = [
   {
     icon: Users,
     title: 'Department Coordination',
-    body: 'BOI service counts toward and helps you secure a Department Coordination spot, placing you in a cross-department leadership role.',
+    body: 'BOI service counts toward and helps you secure a Department Coordination spot, placing you in a leadership role.',
     tag: 'Career Progression',
     tagColor: 'text-green-400 border-green-400/30 bg-green-400/10',
   },
@@ -27,8 +27,8 @@ const benefits = [
   },
   {
     icon: TrendingUp,
-    title: 'Executive-Level Experience',
-    body: 'You gain hands-on experience operating at a pre-command, department head, and department coordination level — before you formally hold those positions.',
+    title: 'Executive level Experience',
+    body: 'You gain hands-on experience operating at a pre-command, department head, and department coordination level, before you formally hold those positions.',
     tag: 'Experience',
     tagColor: 'text-purple-400 border-purple-400/30 bg-purple-400/10',
   },
