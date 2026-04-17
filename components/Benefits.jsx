@@ -41,7 +41,7 @@ const rest = [
 
 export default function Benefits() {
   return (
-    <section id="benefits" className="relative bg-boi-bg-2 py-28 px-6 overflow-hidden">
+    <section id="benefits" className="relative bg-boi-dark py-28 px-6 overflow-hidden">
       {/* BG accents */}
       <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-boi-gold/4 rounded-full blur-[130px] pointer-events-none" />
       <div className="absolute top-0 left-0 w-72 h-72 bg-boi-gold/3 rounded-full blur-[100px] pointer-events-none" />
