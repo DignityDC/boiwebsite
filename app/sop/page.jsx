@@ -104,7 +104,7 @@ const sops = [
       },
       {
         heading: '4.3, Punishments',
-        body: `Punishments can range from warnings, to strikes, to full removal from the Bureau. These actions may also affect rank and position in the chain of command.`,
+        body: `Punishments can range from warnings, to strikes, to full removal from the Bureau, or a blacklist. These actions may also affect rank and position in the chain of command.`,
       },
       {
         heading: '4.4, Immediate Action',
@@ -175,7 +175,7 @@ const sops = [
     sections: [
       {
         heading: '7.1, Who’s in Charge',
-        body: `The Bureau is led by the Director of Operational Integrity, followed by the Deputy Director of Operational Integrity, and this is explained more in our official Discord.`,
+        body: `The Bureau is led by the Director of Operations, followed by Deputy director and this is explained more in https://discord.com/channels/1488518595125444710/1488519700651577405`,
       },
       {
         heading: '7.2, Authority',
