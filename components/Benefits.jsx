@@ -9,7 +9,7 @@ const featured = {
   tagColor: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
   num: '01',
   title: 'Automatic FTO Supervisor',
-  body: 'Upon joining the Bureau Training Academy, you are automatically granted FTO Supervisor status. No additional application or waiting period required — it comes with the role.',
+  body: 'Upon joining the Bureau Training Academy, you are automatically granted FTO Supervisor status. No additional application or waiting period required, it comes with the role.',
 };
 
 const rest = [
