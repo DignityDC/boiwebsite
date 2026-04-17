@@ -12,13 +12,6 @@ const benefits = [
     tagColor: 'text-amber-400 border-amber-400/30 bg-amber-400/10',
   },
   {
-    icon: Star,
-    title: 'Training Oversight',
-    body: 'Personnel serving in training oversight roles gain FTO Supervisor rank as part of their position, recognizing their authority over training standards.',
-    tag: 'Training Oversight',
-    tagColor: 'text-boi-gold border-boi-gold/30 bg-boi-gold/10',
-  },
-  {
     icon: Users,
     title: 'Department Coordination',
     body: 'BOI service counts toward and helps you secure a Department Coordination spot, placing you in a cross-department leadership role.',
