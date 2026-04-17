@@ -14,7 +14,7 @@ const cards = [
     icon: Eye,
     num:  '02',
     title: 'Oversee Reports',
-    body:  'We handle and overview reports to ensure they are being processed fairly and without bias. Accountability applies to the process, not just the outcome.',
+    body:  'We handle officer reports to ensure they are being processed fairly and without bias. Accountability applies to the process, not just the outcome.',
   },
   {
     icon: Target,
@@ -26,7 +26,7 @@ const cards = [
     icon: FileText,
     num:  '04',
     title: 'Field Oversight',
-    body:  'Our field division operates in-game, overseeing all active scenes to ensure officers are conducting themselves with professionalism and integrity.',
+    body:  'Our department’s Field Division operates in-game, actively monitoring all scenes to ensure our officers uphold the highest standards of professionalism, integrity, and proper conduct at all times.',
   },
 ];
 
