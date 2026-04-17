@@ -50,7 +50,7 @@ export default function JoinProcess() {
           className="mb-16"
         >
           <p className="font-mono text-[10px] tracking-[0.3em] text-boi-gold uppercase mb-3">
-            // SECTION 04
+            // SECTION 05
           </p>
           <h2 className="font-serif text-4xl md:text-5xl font-bold text-white mb-4">
             How to Join
