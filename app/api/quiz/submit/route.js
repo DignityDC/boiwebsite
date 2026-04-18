@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 function gradeAnswer(q, answer) {
-  if (!('correct' in q)) return null; // no grading for this question
+  if (!('correct' in q)) return null;
 
   if (q.type === 'yesno') {
     return answer === q.correct;
@@ -91,21 +91,3 @@ export async function POST(req) {
 
   return NextResponse.json({ success: true });
 }
-
-  const { password, answers, name } = await req.json();
-
-  if (!password || password !== process.env.QUIZ_PASSWORD) {
-    return NextResponse.json({ error: 'Invalid password.' }, { status: 401 });
-  }
-
-  const webhookUrl = process.env.QUIZ_WEBHOOK_URL;
-  if (!webhookUrl) {
-    return NextResponse.json({ error: 'Webhook not configured.' }, { status: 500 });
-  }
-
-  let questions = [];
-  try {
-    questions = JSON.parse(process.env.QUIZ_QUESTIONS || '[]');
-  } catch {
-    return NextResponse.json({ error: 'Quiz configuration error.' }, { status: 500 });
-  }
