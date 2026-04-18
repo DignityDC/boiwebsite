@@ -230,7 +230,7 @@ function QuizForm({ questions, password }) {
           <p className="text-boi-muted font-mono text-xs tracking-widest uppercase mb-6">Bureau of Operational Integrity</p>
           <div className="h-px w-24 bg-gradient-to-r from-transparent via-boi-gold/40 to-transparent mx-auto mb-6" />
           <p className="text-boi-muted leading-relaxed max-w-sm mx-auto">
-            Your quiz has been submitted to Bureau leadership for review. You will be contacted through official channels.
+            Your quiz has been submitted to your instructors for review.
           </p>
         </div>
       </motion.div>
@@ -252,7 +252,7 @@ function QuizForm({ questions, password }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="w-full bg-boi-bg border border-boi-border focus:border-boi-gold/50 text-white font-mono text-sm px-4 py-3 outline-none transition-colors duration-200 placeholder:text-boi-muted/40"
-            placeholder="Enter your in-game name..."
+            placeholder="Enter your name exactly as it is in the BOI discord..."
             required
           />
         </div>
