@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans:  'Inter', 'Helvetica Neue', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono:  'Share Tech Mono', 'Courier New', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #080808;
+  color: #e8eaf0;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: #080808; }
+::-webkit-scrollbar-thumb { background: #c9a228; border-radius: 4px; }
+
+/* ─── Hex grid background ───────────────────── */
+.hex-bg {
+  background-color: #06070d;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill='%23c9a228' fill-opacity='0.025' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ─── Grid background ───────────────────────── */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(201,162,40,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,162,40,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ─── Glow utilities ────────────────────────── */
+.text-glow-gold {
+  text-shadow: 0 0 18px rgba(201,162,40,0.55), 0 0 36px rgba(201,162,40,0.25);
+}
+.text-glow-sm {
+  text-shadow: 0 0 10px rgba(201,162,40,0.4);
+}
+.border-glow {
+  box-shadow: 0 0 0 1px rgba(201,162,40,0.25), inset 0 0 24px rgba(201,162,40,0.02);
+  transition: box-shadow 0.3s ease;
+}
+.border-glow:hover {
+  box-shadow: 0 0 0 1px rgba(201,162,40,0.55), 0 0 22px rgba(201,162,40,0.12), inset 0 0 24px rgba(201,162,40,0.04);
+}
+
+/* ─── Clip-corner card ──────────────────────── */
+.clip-corner {
+  clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+}
+.clip-corner-sm {
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.clip-corner-br {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+
+/* ─── Scanline overlay ──────────────────────── */
+.scanline-parent { position: relative; overflow: hidden; }
+.scanline-parent::after {
+  content: '';
+  position: absolute;
+  left: 0; top: -4px;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, transparent 10%, rgba(201,162,40,0.18) 50%, transparent 90%);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Section divider ───────────────────────── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,162,40,0.5) 50%, transparent);
+}
+
+/* ─── Gradient fades ────────────────────────── */
+.fade-top    { mask-image: linear-gradient(to bottom, transparent, black 30%); }
+.fade-bottom { mask-image: linear-gradient(to top,   transparent, black 30%); }
+
+/* ─── Marquee ticker ────────────────────────── */
+.ticker-wrap    { overflow: hidden; white-space: nowrap; display: flex; }
+.ticker-content { display: flex; flex-shrink: 0; min-width: 100%; animation: ticker 35s linear infinite; }
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+/* ─── Form inputs ───────────────────────────── */
+.form-input {
+  @apply w-full bg-boi-bg border border-boi-border text-boi-text px-4 py-3 font-mono text-sm
+         focus:outline-none focus:border-boi-gold focus:ring-1 focus:ring-boi-gold/30
+         placeholder:text-boi-muted/50 transition-colors duration-200;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+}
+.form-label {
+  @apply block font-mono text-xs tracking-widest text-boi-muted uppercase mb-2;
+}
+
+/* ─── Noise pseudo-layer ────────────────────── */
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── Reveal animation ──────────────────────── */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal { animation: revealUp 0.7s ease-out both; }
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+.reveal-delay-4 { animation-delay: 0.4s; }
+.reveal-delay-5 { animation-delay: 0.5s; }

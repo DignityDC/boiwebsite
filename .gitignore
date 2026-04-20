@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+discord-bot/node_modules/
+
+# Next.js
+.next/
+out/
+
+# env files — NEVER commit secrets
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# misc
+.DS_Store
+*.log
