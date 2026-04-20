@@ -76,14 +76,12 @@ export async function POST(request) {
               style:     3, // Success (green)
               label:     'Accept',
               custom_id: `app_accept:${userId}`,
-              emoji:     { name: '✅' },
             },
             {
               type:      C.BUTTON,
               style:     4, // Danger (red)
               label:     'Deny',
               custom_id: `app_deny:${userId}`,
-              emoji:     { name: '❌' },
             },
           ],
         },
