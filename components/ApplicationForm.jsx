@@ -116,8 +116,7 @@ export default function ApplicationForm() {
             </div>
             <h3 className="font-serif text-xl font-bold text-white mb-2">Applications Closed</h3>
             <p className="text-boi-muted text-sm leading-relaxed max-w-xs mx-auto">
-              Bureau recruitment is not currently accepting applications. Check back later or monitor
-              our Discord for announcements.
+              Bureau recruitment is not currently accepting applications. Please check back later.
             </p>
             <p className="font-mono text-[10px] tracking-widest text-boi-gold uppercase mt-6">
               // RECRUITMENT SUSPENDED
