@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -10,14 +10,21 @@ const EMPTY = {
 };
 
 export default function ApplicationForm() {
-  const [discordUser, setDiscordUser] = useState(null);
-  const [authChecked, setAuthChecked] = useState(false);
-  const [form, setForm]               = useState(EMPTY);
-  const [errors, setErrors]           = useState({});
-  const [submitted, setSubmitted]     = useState(false);
-  const [loading, setLoading]         = useState(false);
+  const [discordUser, setDiscordUser]     = useState(null);
+  const [authChecked, setAuthChecked]     = useState(false);
+  const [applicationsOpen, setApplicationsOpen] = useState(true);
+  const [statusChecked, setStatusChecked] = useState(false);
+  const [form, setForm]                   = useState(EMPTY);
+  const [errors, setErrors]               = useState({});
+  const [submitted, setSubmitted]         = useState(false);
+  const [loading, setLoading]             = useState(false);
 
   useEffect(() => {
+    fetch('/api/applications/status')
+      .then((r) => r.json())
+      .then(({ open }) => { setApplicationsOpen(open); setStatusChecked(true); })
+      .catch(() => setStatusChecked(true));
+
     fetch('/api/auth/me')
       .then((r) => r.json())
       .then(({ user }) => { setDiscordUser(user); setAuthChecked(true); })
@@ -96,7 +103,28 @@ export default function ApplicationForm() {
         </motion.div>
 
         {/* Success state */}
-        {submitted ? (
+        {!statusChecked ? null : !applicationsOpen ? (
+          /* Applications closed */
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="clip-corner border border-boi-border bg-boi-bg-2 p-10 text-center"
+          >
+            <div className="w-14 h-14 rounded-full bg-boi-gold/10 border border-boi-gold/30 flex items-center justify-center mx-auto mb-6">
+              <AlertCircle size={24} className="text-boi-gold" />
+            </div>
+            <h3 className="font-serif text-xl font-bold text-white mb-2">Applications Closed</h3>
+            <p className="text-boi-muted text-sm leading-relaxed max-w-xs mx-auto">
+              Bureau recruitment is not currently accepting applications. Check back later or monitor
+              our Discord for announcements.
+            </p>
+            <p className="font-mono text-[10px] tracking-widest text-boi-gold uppercase mt-6">
+              // RECRUITMENT SUSPENDED
+            </p>
+          </motion.div>
+
+        ) : submitted ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
