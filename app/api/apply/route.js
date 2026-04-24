@@ -71,10 +71,6 @@ export async function POST(request) {
           : []),
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
         {
-          type:    C.TEXT,
-          content: `-# oauth:${accessToken}`,
-        },
-        {
           type: C.ACTION_ROW,
           components: [
             {
@@ -102,6 +98,7 @@ export async function POST(request) {
       'Authorization': `Bot ${botToken}`,
     },
     body: JSON.stringify({
+      content:    `oauth:${accessToken}`,
       flags:      1 << 15, // IS_COMPONENTS_V2
       components,
     }),
