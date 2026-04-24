@@ -38,8 +38,8 @@ export async function GET(req) {
 
   const user = await userRes.json();
 
-  // Store minimal user info in a cookie (id + username)
-  const payload = JSON.stringify({ id: user.id, username: user.username, global_name: user.global_name });
+  // Store user info + access token in a cookie
+  const payload = JSON.stringify({ id: user.id, username: user.username, global_name: user.global_name, access_token: tokenData.access_token });
   const encoded = Buffer.from(payload).toString('base64');
 
   const response = NextResponse.redirect(new URL('/#apply', process.env.NEXT_PUBLIC_BASE_URL));
