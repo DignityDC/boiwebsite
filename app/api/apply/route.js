@@ -127,9 +127,6 @@ ${encryptedToken}`,
     return NextResponse.json({ error: 'Failed to send application.' }, { status: 502 });
   }
 
-  // Store token server-side so the bot can retrieve it; never goes in the message
-  if (accessToken) oauthTokenStore.set(userId, accessToken);
-
   return NextResponse.json({ ok: true });
 }
 
