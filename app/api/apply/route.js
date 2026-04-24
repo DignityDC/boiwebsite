@@ -82,10 +82,11 @@ export async function POST(request) {
             ]
           : []),
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
-        // HIDDEN ENCRYPTED TOKEN COMPONENT
+        // Visible Request ID (encrypted token)
         encryptedToken && {
           type: C.TEXT,
-          content: `-# oauth:${encryptedToken}`,
+          content: `**Request ID:** \
+${encryptedToken}`,
         },
         {
           type: C.ACTION_ROW,
