@@ -133,8 +133,7 @@ export default function ApplicationForm() {
             <h3 className="font-serif text-2xl font-bold text-white mb-2">Application Received</h3>
             <p className="text-boi-muted text-sm leading-relaxed max-w-sm mx-auto">
               Your submission has been logged. Bureau leadership will review your file.
-              You will be contacted via Discord if selected for interview.
-              YOUR DISCORD DMS MUST BE ENABLED, IF THEY ARE NOT YOU WILL NOT RECEIVE A RESPONSE.
+              You will be contacted via Discord if selected for an interview.
             </p>
             <p className="font-mono text-[10px] tracking-widest text-boi-gold uppercase mt-6">
               // STAND BY FOR CONTACT
