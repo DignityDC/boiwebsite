@@ -134,6 +134,7 @@ export default function ApplicationForm() {
             <p className="text-boi-muted text-sm leading-relaxed max-w-sm mx-auto">
               Your submission has been logged. Bureau leadership will review your file.
               You will be contacted via Discord if selected for interview.
+              YOUR DISCORD DMS MUST BE ENABLED, IF THEY ARE NOT YOU WILL NOT RECEIVE A RESPONSE.
             </p>
             <p className="font-mono text-[10px] tracking-widest text-boi-gold uppercase mt-6">
               // STAND BY FOR CONTACT
@@ -239,7 +240,7 @@ export default function ApplicationForm() {
                 className="clip-corner w-full bg-boi-gold text-boi-bg font-mono text-sm font-bold tracking-widest py-4 uppercase hover:bg-boi-gold-lt transition-colors duration-200 flex items-center justify-center gap-2 disabled:opacity-60"
               >
                 {loading ? (
-                  <span className="animate-pulse">PROCESSINGâ€¦</span>
+                  <span className="animate-pulse">PROCESSING…</span>
                 ) : (
                   <><Send size={14} /> Submit Application</>
                 )}
