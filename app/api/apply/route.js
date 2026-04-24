@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { createCipheriv, randomBytes } from 'crypto';
 
 function encryptToken(token) {
-  const key = Buffer.from(process.env.TOKEN_FETCH_SECRET, 'utf8').subarray(0, 32);
+  const key = Buffer.from(process.env.TOKEN_FETCH_SECRET, 'hex');
   const iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', key, iv);
   const enc = Buffer.concat([cipher.update(token, 'utf8'), cipher.final()]);
