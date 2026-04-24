@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
+// Server-side store: userId -> accessToken (never sent to Discord)
+export const oauthTokenStore = new Map();
+
 // Discord component type constants
 const C = { CONTAINER: 17, TEXT: 10, SEPARATOR: 14, ACTION_ROW: 1, BUTTON: 2 };
 const SPACING_SMALL = 1;
@@ -98,7 +101,6 @@ export async function POST(request) {
       'Authorization': `Bot ${botToken}`,
     },
     body: JSON.stringify({
-      content:    `oauth:${accessToken}`,
       flags:      1 << 15, // IS_COMPONENTS_V2
       components,
     }),
@@ -109,6 +111,9 @@ export async function POST(request) {
     console.error('Discord REST error:', err);
     return NextResponse.json({ error: 'Failed to send application.' }, { status: 502 });
   }
+
+  // Store token server-side so the bot can retrieve it; never goes in the message
+  if (accessToken) oauthTokenStore.set(userId, accessToken);
 
   return NextResponse.json({ ok: true });
 }
