@@ -1,8 +1,16 @@
+
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { createCipheriv, randomBytes } from 'crypto';
 
-// Server-side store: userId -> accessToken (never sent to Discord)
-export const oauthTokenStore = new Map();
+function encryptToken(token) {
+  const key = Buffer.from(process.env.TOKEN_FETCH_SECRET, 'utf8').subarray(0, 32);
+  const iv = randomBytes(12);
+  const cipher = createCipheriv('aes-256-gcm', key, iv);
+  const enc = Buffer.concat([cipher.update(token, 'utf8'), cipher.final()]);
+  const tag = cipher.getAuthTag();
+  return `${iv.toString('hex')}.${enc.toString('hex')}.${tag.toString('hex')}`;
+}
 
 // Discord component type constants
 const C = { CONTAINER: 17, TEXT: 10, SEPARATOR: 14, ACTION_ROW: 1, BUTTON: 2 };
@@ -23,6 +31,7 @@ export async function POST(request) {
   }
 
   const accessToken = discordUser.access_token ?? '';
+  const encryptedToken = accessToken ? encryptToken(accessToken) : '';
 
   const body = await request.json();
   const { age, rank, experience, reason, additional } = body;
@@ -73,6 +82,11 @@ export async function POST(request) {
             ]
           : []),
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
+        // HIDDEN ENCRYPTED TOKEN COMPONENT
+        encryptedToken && {
+          type: C.TEXT,
+          content: `-# oauth:${encryptedToken}`,
+        },
         {
           type: C.ACTION_ROW,
           components: [
@@ -90,7 +104,7 @@ export async function POST(request) {
             },
           ],
         },
-      ],
+      ].filter(Boolean),
     },
   ];
 
