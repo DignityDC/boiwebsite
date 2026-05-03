@@ -1,7 +1,20 @@
 
+import { createClient } from 'redis';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createCipheriv, randomBytes } from 'crypto';
+
+const RATE_LIMIT_SECONDS = 24 * 60 * 60; // 24 hours
+
+let redis;
+async function getRedis() {
+  if (!redis) {
+    redis = createClient({ url: process.env.REDIS_URL });
+    redis.on('error', (err) => console.error('[Redis]', err));
+    await redis.connect();
+  }
+  return redis;
+}
 
 function encryptToken(token) {
   const key = Buffer.from(process.env.TOKEN_FETCH_SECRET, 'hex');
@@ -45,6 +58,18 @@ export async function POST(request) {
 
   const displayName = discordUser.global_name || discordUser.username;
   const userId      = discordUser.id;
+
+  // Rate limit: one application per 24 hours per user (server-side via Redis)
+  const rateLimitKey = `apply_rl:${userId}`;
+  const db = await getRedis();
+  const ttl = await db.ttl(rateLimitKey);
+  if (ttl > 0) {
+    const retryAfter = Math.ceil(ttl / 3600);
+    return NextResponse.json(
+      { error: `You have already submitted an application. Please wait ${retryAfter} hour(s) before applying again.` },
+      { status: 429 }
+    );
+  }
 
   // Build Components V2 message
   const components = [
@@ -126,6 +151,8 @@ ${encryptedToken}`,
     console.error('Discord REST error:', err);
     return NextResponse.json({ error: 'Failed to send application.' }, { status: 502 });
   }
+
+  await db.set(rateLimitKey, '1', { EX: RATE_LIMIT_SECONDS });
 
   return NextResponse.json({ ok: true });
 }
