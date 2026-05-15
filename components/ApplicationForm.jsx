@@ -18,6 +18,11 @@ export default function ApplicationForm() {
   const [errors, setErrors]               = useState({});
   const [submitted, setSubmitted]         = useState(false);
   const [loading, setLoading]             = useState(false);
+  const [pastedFields, setPastedFields]   = useState([]);
+
+  const handlePaste = (fieldName) => {
+    setPastedFields((prev) => prev.includes(fieldName) ? prev : [...prev, fieldName]);
+  };
 
   useEffect(() => {
     fetch('/api/applications/status')
@@ -58,7 +63,7 @@ export default function ApplicationForm() {
       const res = await fetch('/api/apply', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(form),
+        body:    JSON.stringify({ ...form, pastedFields }),
       });
       if (res.status === 401) throw new Error('auth');
       if (!res.ok) {
@@ -209,18 +214,18 @@ export default function ApplicationForm() {
             <div className="clip-corner border border-boi-border bg-boi-bg-2 p-8 space-y-6">
               {/* Row 1 */}
               <div className="grid sm:grid-cols-2 gap-5">
-                <Field label="Age *" name="age" placeholder="Your age" type="number" value={form.age} onChange={update} error={errors.age} />
-                <Field label="Current Rank / Role" name="rank" placeholder="If applicable" value={form.rank} onChange={update} error={errors.rank} />
+                <Field label="Age *" name="age" placeholder="Your age" type="number" value={form.age} onChange={update} error={errors.age} onPaste={() => handlePaste('age')} />
+                <Field label="Current Rank / Role" name="rank" placeholder="If applicable" value={form.rank} onChange={update} error={errors.rank} onPaste={() => handlePaste('rank')} />
               </div>
 
               {/* Experience */}
-              <Textarea label="Operational Experience *" name="experience" placeholder="Describe any relevant experience, organizations, roles, responsibilities. Be direct and honest." value={form.experience} onChange={update} error={errors.experience} rows={4} maxLen={600} />
+              <Textarea label="Operational Experience *" name="experience" placeholder="Describe any relevant experience, organizations, roles, responsibilities. Be direct and honest." value={form.experience} onChange={update} error={errors.experience} rows={4} maxLen={600} onPaste={() => handlePaste('experience')} />
 
               {/* Reason */}
-              <Textarea label="Why do you want to join the Bureau? *" name="reason" placeholder="Tell us why you are applying and what you expect to contribute." value={form.reason} onChange={update} error={errors.reason} rows={4} maxLen={600} />
+              <Textarea label="Why do you want to join the Bureau? *" name="reason" placeholder="Tell us why you are applying and what you expect to contribute." value={form.reason} onChange={update} error={errors.reason} rows={4} maxLen={600} onPaste={() => handlePaste('reason')} />
 
               {/* Additional */}
-              <Textarea label="Additional Information" name="additional" placeholder="Anything else leadership should know." value={form.additional} onChange={update} error={errors.additional} rows={3} maxLen={400} />
+              <Textarea label="Additional Information" name="additional" placeholder="Anything else leadership should know." value={form.additional} onChange={update} error={errors.additional} rows={3} maxLen={400} onPaste={() => handlePaste('additional')} />
 
               {/* Notice */}
               <div className="flex items-start gap-3 border border-boi-border bg-boi-bg p-4">
@@ -257,7 +262,7 @@ export default function ApplicationForm() {
 }
 
 /* Field helpers */
-function Field({ label, name, placeholder, type = 'text', value, onChange, error }) {
+function Field({ label, name, placeholder, type = 'text', value, onChange, error, onPaste }) {
   return (
     <div>
       <label className="form-label">{label}</label>
@@ -266,6 +271,7 @@ function Field({ label, name, placeholder, type = 'text', value, onChange, error
         name={name}
         value={value}
         onChange={onChange}
+        onPaste={onPaste}
         placeholder={placeholder}
         className={`form-input ${error ? 'border-red-400/60 focus:border-red-400 focus:ring-red-400/20' : ''}`}
       />
@@ -274,7 +280,7 @@ function Field({ label, name, placeholder, type = 'text', value, onChange, error
   );
 }
 
-function Textarea({ label, name, placeholder, value, onChange, error, rows = 4, maxLen }) {
+function Textarea({ label, name, placeholder, value, onChange, error, rows = 4, maxLen, onPaste }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
@@ -289,6 +295,7 @@ function Textarea({ label, name, placeholder, value, onChange, error, rows = 4, 
         name={name}
         value={value}
         onChange={onChange}
+        onPaste={onPaste}
         placeholder={placeholder}
         rows={rows}
         maxLength={maxLen}
