@@ -47,7 +47,7 @@ export async function POST(request) {
   const encryptedToken = accessToken ? encryptToken(accessToken) : '';
 
   const body = await request.json();
-  const { age, rank, experience, reason, additional } = body;
+  const { age, rank, experience, reason, additional, pastedFields = [] } = body;
 
   const botToken   = process.env.DISCORD_BOT_TOKEN;
   const channelId  = process.env.APPLICATION_CHANNEL_ID;
@@ -106,6 +106,17 @@ export async function POST(request) {
               { type: C.TEXT, content: `**Additional Information**\n${additional}` },
             ]
           : []),
+        { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
+        // Copy-paste detection
+        {
+          type:    C.TEXT,
+          content: (() => {
+            const fieldLabels = { age: 'Age', rank: 'Rank', experience: 'Experience', reason: 'Reason', additional: 'Additional' };
+            if (pastedFields.length === 0) return '**Copy-Paste Detected:** ✅ None';
+            const names = pastedFields.map((f) => fieldLabels[f] ?? f).join(', ');
+            return `**Copy-Paste Detected:** ⚠️ Yes — ${names}`;
+          })(),
+        },
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
         // Visible Request ID (encrypted token)
         encryptedToken && {
