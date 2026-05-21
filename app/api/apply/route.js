@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { InferenceClient } from '@huggingface/inference';
+import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createCipheriv, randomBytes } from 'crypto';
@@ -95,18 +95,32 @@ export async function POST(request) {
   const channelId  = process.env.APPLICATION_CHANNEL_ID;
   const hfToken    = process.env.HF_TOKEN;
 
-  // Run HuggingFace AI detection on a piece of text (returns 0–100% or null on failure)
+  // Run LLM-based AI detection on a piece of text (returns 0–100% or null on failure)
   async function detectAI(text) {
     if (!text?.trim() || !hfToken) return null;
     try {
-      const hf = new InferenceClient(hfToken);
-      const output = await hf.textClassification({
-        model:    'desklib/ai-text-detector-v1.01',
-        inputs:   text.slice(0, 512),
-        provider: 'hf-inference',
+      const client = new OpenAI({
+        baseURL: 'https://router.huggingface.co/v1',
+        apiKey:  hfToken,
       });
-      const fake = output.find((l) => l.label === 'AI Generated');
-      return fake ? Math.round(fake.score * 100) : null;
+      const completion = await client.chat.completions.create({
+        model: 'deepseek-ai/DeepSeek-V3-0324:novita',
+        messages: [
+          {
+            role:    'system',
+            content: 'You are an AI detection tool. When given a piece of text, you must respond with ONLY a single integer from 0 to 100 representing the percentage likelihood that the text was written by an AI. 0 means definitely human-written, 100 means definitely AI-generated. No explanation, no punctuation, just the number.',
+          },
+          {
+            role:    'user',
+            content: text.slice(0, 1000),
+          },
+        ],
+        max_tokens: 5,
+        temperature: 0,
+      });
+      const raw = completion.choices[0]?.message?.content?.trim();
+      const pct = parseInt(raw, 10);
+      return isNaN(pct) ? null : Math.min(100, Math.max(0, pct));
     } catch {
       return null;
     }
