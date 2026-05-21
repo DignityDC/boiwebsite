@@ -1,5 +1,4 @@
 import { createClient } from 'redis';
-import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createCipheriv, randomBytes } from 'crypto';
@@ -93,38 +92,6 @@ export async function POST(request) {
 
   const botToken   = process.env.DISCORD_BOT_TOKEN;
   const channelId  = process.env.APPLICATION_CHANNEL_ID;
-  const hfToken    = process.env.HF_TOKEN;
-
-  // Run LLM-based AI detection on a piece of text (returns 0–100% or null on failure)
-  async function detectAI(text) {
-    if (!text?.trim() || !hfToken) return null;
-    try {
-      const client = new OpenAI({
-        baseURL: 'https://router.huggingface.co/v1',
-        apiKey:  hfToken,
-      });
-      const completion = await client.chat.completions.create({
-        model: 'deepseek-ai/DeepSeek-V3-0324:novita',
-        messages: [
-          {
-            role:    'system',
-            content: 'You are an AI detection tool. When given a piece of text, you must respond with ONLY a single integer from 0 to 100 representing the percentage likelihood that the text was written by an AI. 0 means definitely human-written, 100 means definitely AI-generated. No explanation, no punctuation, just the number.',
-          },
-          {
-            role:    'user',
-            content: text.slice(0, 1000),
-          },
-        ],
-        max_tokens: 5,
-        temperature: 0,
-      });
-      const raw = completion.choices[0]?.message?.content?.trim();
-      const pct = parseInt(raw, 10);
-      return isNaN(pct) ? null : Math.min(100, Math.max(0, pct));
-    } catch {
-      return null;
-    }
-  }
 
   if (!botToken || !channelId) {
     return NextResponse.json({ error: 'Bot not configured.' }, { status: 500 });
@@ -146,19 +113,6 @@ export async function POST(request) {
         { status: 429 }
       );
     }
-  }
-
-  // Run AI detection on experience + reason in parallel (raw text, no bold markers)
-  const [experienceAI, reasonAI] = await Promise.all([
-    detectAI(experience),
-    detectAI(reason),
-  ]);
-
-  function aiLabel(pct) {
-    if (pct === null) return '`N/A`';
-    if (pct >= 70)    return `⚠️ **${pct}%** (likely AI)`;
-    if (pct >= 40)    return `🟡 **${pct}%** (uncertain)`;
-    return              `✅ **${pct}%** (likely human)`;
   }
 
   // Build Components V2 message
@@ -207,12 +161,6 @@ export async function POST(request) {
             const names = pastedKeys.map((f) => fieldLabels[f] ?? f).join(', ');
             return `**Copy-Paste Detected:** ⚠️ Yes — ${names} (pasted text is **bolded** above)`;
           })(),
-        },
-        { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
-        // AI detection
-        {
-          type:    C.TEXT,
-          content: `**AI Detection**\n- Operational Experience: ${aiLabel(experienceAI)}\n- Why do you want to join: ${aiLabel(reasonAI)}`,
         },
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
         // Visible Request ID (encrypted token)
