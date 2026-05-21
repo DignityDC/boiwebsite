@@ -101,11 +101,11 @@ export async function POST(request) {
     try {
       const hf = new InferenceClient(hfToken);
       const output = await hf.textClassification({
-        model:    'openai-community/roberta-base-openai-detector',
+        model:    'desklib/ai-text-detector-v1.01',
         inputs:   text.slice(0, 512),
         provider: 'hf-inference',
       });
-      const fake = output.find((l) => l.label === 'Fake');
+      const fake = output.find((l) => l.label === 'AI Generated');
       return fake ? Math.round(fake.score * 100) : null;
     } catch {
       return null;
