@@ -10,7 +10,7 @@ const eligible = [
   { text: 'Must be professional at all times, in all environments.' },
   { text: 'Must be 14 years of age or older.' },
   { text: 'Must be well-regarded within the JDO community.' },
-  { text: 'Department heads should agree you meet the standard to join BOI.' },
+  { text: 'Department heads or pre-command should agree that you meet the standard to join BOI.' },
 ];
 
 const disqualifying = [
