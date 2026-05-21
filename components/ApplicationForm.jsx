@@ -18,10 +18,15 @@ export default function ApplicationForm() {
   const [errors, setErrors]               = useState({});
   const [submitted, setSubmitted]         = useState(false);
   const [loading, setLoading]             = useState(false);
-  const [pastedFields, setPastedFields]   = useState([]);
+  const [pastedContent, setPastedContent] = useState({});
 
-  const handlePaste = (fieldName) => {
-    setPastedFields((prev) => prev.includes(fieldName) ? prev : [...prev, fieldName]);
+  const handlePaste = (fieldName, e) => {
+    const text = e.clipboardData?.getData('text') ?? '';
+    if (!text) return;
+    setPastedContent((prev) => ({
+      ...prev,
+      [fieldName]: [...(prev[fieldName] ?? []), text],
+    }));
   };
 
   useEffect(() => {
@@ -63,7 +68,7 @@ export default function ApplicationForm() {
       const res = await fetch('/api/apply', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ ...form, pastedFields }),
+        body:    JSON.stringify({ ...form, pastedContent }),
       });
       if (res.status === 401) throw new Error('auth');
       if (!res.ok) {
@@ -213,18 +218,18 @@ export default function ApplicationForm() {
             <div className="clip-corner border border-boi-border bg-boi-bg-2 p-8 space-y-6">
               {/* Row 1 */}
               <div className="grid sm:grid-cols-2 gap-5">
-                <Field label="Age *" name="age" placeholder="Your age" type="number" value={form.age} onChange={update} error={errors.age} onPaste={() => handlePaste('age')} />
-                <Field label="Current Rank / Role" name="rank" placeholder="If applicable" value={form.rank} onChange={update} error={errors.rank} onPaste={() => handlePaste('rank')} />
+                <Field label="Age *" name="age" placeholder="Your age" type="number" value={form.age} onChange={update} error={errors.age} onPaste={(e) => handlePaste('age', e)} />
+                <Field label="Current Rank / Role" name="rank" placeholder="If applicable" value={form.rank} onChange={update} error={errors.rank} onPaste={(e) => handlePaste('rank', e)} />
               </div>
 
               {/* Experience */}
-              <Textarea label="Operational Experience *" name="experience" placeholder="Describe any relevant experience, organizations, roles, responsibilities. Be direct and honest." value={form.experience} onChange={update} error={errors.experience} rows={4} maxLen={600} onPaste={() => handlePaste('experience')} />
+              <Textarea label="Operational Experience *" name="experience" placeholder="Describe any relevant experience, organizations, roles, responsibilities. Be direct and honest." value={form.experience} onChange={update} error={errors.experience} rows={4} maxLen={600} onPaste={(e) => handlePaste('experience', e)} />
 
               {/* Reason */}
-              <Textarea label="Why do you want to join the Bureau? *" name="reason" placeholder="Tell us why you are applying and what you expect to contribute." value={form.reason} onChange={update} error={errors.reason} rows={4} maxLen={600} onPaste={() => handlePaste('reason')} />
+              <Textarea label="Why do you want to join the Bureau? *" name="reason" placeholder="Tell us why you are applying and what you expect to contribute." value={form.reason} onChange={update} error={errors.reason} rows={4} maxLen={600} onPaste={(e) => handlePaste('reason', e)} />
 
               {/* Additional */}
-              <Textarea label="Additional Information" name="additional" placeholder="Anything else leadership should know." value={form.additional} onChange={update} error={errors.additional} rows={3} maxLen={400} onPaste={() => handlePaste('additional')} />
+              <Textarea label="Additional Information" name="additional" placeholder="Anything else leadership should know." value={form.additional} onChange={update} error={errors.additional} rows={3} maxLen={400} onPaste={(e) => handlePaste('additional', e)} />
 
               {/* Notice */}
               <div className="flex items-start gap-3 border border-boi-border bg-boi-bg p-4">
