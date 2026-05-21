@@ -74,15 +74,18 @@ export async function POST(request) {
   const userId      = discordUser.id;
 
   // Rate limit: one application per 24 hours per user (server-side via Redis)
+  const RATE_LIMIT_BYPASS = ['872577343426797589'];
   const rateLimitKey = `apply_rl:${userId}`;
   const db = await getRedis();
-  const ttl = await db.ttl(rateLimitKey);
-  if (ttl > 0) {
-    const retryAfter = Math.ceil(ttl / 3600);
-    return NextResponse.json(
-      { error: `You have already submitted an application. Please wait ${retryAfter} hour(s) before applying again.` },
-      { status: 429 }
-    );
+  if (!RATE_LIMIT_BYPASS.includes(userId)) {
+    const ttl = await db.ttl(rateLimitKey);
+    if (ttl > 0) {
+      const retryAfter = Math.ceil(ttl / 3600);
+      return NextResponse.json(
+        { error: `You have already submitted an application. Please wait ${retryAfter} hour(s) before applying again.` },
+        { status: 429 }
+      );
+    }
   }
 
   // Build Components V2 message
