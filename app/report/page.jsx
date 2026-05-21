@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { AlertTriangle, Send, CheckCircle, AlertCircle, Loader2, Paperclip, X } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -19,6 +19,27 @@ export default function ReportPage() {
   const [loading,   setLoading]   = useState(false);
   const [success,   setSuccess]   = useState(false);
   const [error,     setError]     = useState('');
+  const [images,    setImages]    = useState([]); // Array of File objects
+  const fileInputRef = useRef(null);
+
+  const ACCEPTED = ['image/png','image/jpeg','image/gif','image/webp','image/svg+xml'];
+  const MAX_FILES = 5;
+  const MAX_BYTES = 8 * 1024 * 1024; // 8 MB per file
+
+  const handleFiles = (incoming) => {
+    const valid = [...incoming].filter((f) => {
+      if (!ACCEPTED.includes(f.type)) return false;
+      if (f.size > MAX_BYTES) { setError(`"${f.name}" exceeds the 8 MB limit.`); return false; }
+      return true;
+    });
+    setImages((prev) => {
+      const merged = [...prev, ...valid];
+      if (merged.length > MAX_FILES) { setError(`Maximum ${MAX_FILES} images allowed.`); return prev; }
+      return merged;
+    });
+  };
+
+  const removeImage = (idx) => setImages((prev) => prev.filter((_, i) => i !== idx));
 
   const set = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
@@ -27,10 +48,17 @@ export default function ReportPage() {
     setError('');
     setLoading(true);
     try {
+      const fd = new FormData();
+      fd.append('reporterName', form.reporterName);
+      fd.append('reportedId',   form.reportedId);
+      fd.append('reason',       form.reason);
+      fd.append('evidence',     form.evidence);
+      fd.append('additional',   form.additional);
+      images.forEach((img) => fd.append('images', img));
+
       const res = await fetch('/api/report', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(form),
+        method: 'POST',
+        body:   fd,
       });
       const data = await res.json();
       if (!res.ok) {
@@ -172,6 +200,48 @@ export default function ReportPage() {
                   <p className="font-mono text-[9px] text-boi-muted/60 mt-1.5">
                     Provide Imgur, YouTube, Streamable, or any direct links. One link per line is recommended.
                   </p>
+                </div>
+
+                {/* Image attachments */}
+                <div>
+                  <label className="font-mono text-[9px] tracking-widest text-boi-muted uppercase block mb-2">
+                    Attach Images <span className="text-boi-muted/50">(Optional — max 5, 8 MB each)</span>
+                  </label>
+
+                  {/* Drop zone */}
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => { e.preventDefault(); handleFiles(e.dataTransfer.files); }}
+                    className="border border-dashed border-boi-border hover:border-boi-gold/40 bg-boi-bg cursor-pointer transition-colors duration-200 px-4 py-6 flex flex-col items-center gap-2"
+                  >
+                    <Paperclip size={16} className="text-boi-muted" />
+                    <span className="font-mono text-[10px] text-boi-muted">
+                      Click or drag images here &mdash; PNG, JPG, GIF, WEBP, SVG
+                    </span>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => handleFiles(e.target.files)}
+                  />
+
+                  {/* Preview chips */}
+                  {images.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {images.map((img, i) => (
+                        <div key={i} className="flex items-center gap-1.5 bg-boi-bg border border-boi-border px-2.5 py-1 text-[10px] font-mono text-boi-muted max-w-[200px]">
+                          <span className="truncate">{img.name}</span>
+                          <button type="button" onClick={() => removeImage(i)} className="text-boi-muted hover:text-red-400 shrink-0">
+                            <X size={10} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Additional info */}
