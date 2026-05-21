@@ -58,7 +58,7 @@ export async function POST(request) {
       if (!pasted) continue;
       // Escape special regex chars in the pasted string
       const escaped = pasted.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      result = result.replace(new RegExp(escaped, 'g'), `__${pasted}__`);
+      result = result.replace(new RegExp(escaped, 'g'), `**${pasted}**`);
     }
     return result;
   }
@@ -129,7 +129,7 @@ export async function POST(request) {
             const pastedKeys = Object.keys(pastedContent).filter((k) => pastedContent[k]?.length);
             if (pastedKeys.length === 0) return '**Copy-Paste Detected:** ✅ None';
             const names = pastedKeys.map((f) => fieldLabels[f] ?? f).join(', ');
-            return `**Copy-Paste Detected:** ⚠️ Yes — ${names} (pasted text is __underlined__ above)`;
+            return `**Copy-Paste Detected:** ⚠️ Yes — ${names} (pasted text is **bolded** above)`;
           })(),
         },
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
