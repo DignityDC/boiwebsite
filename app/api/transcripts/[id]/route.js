@@ -12,7 +12,7 @@ async function getRedis() {
 }
 
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
   if (!/^[A-F0-9]{10}$/i.test(id)) {
     return NextResponse.json({ error: 'Invalid transcript ID.' }, { status: 400 });
   }
