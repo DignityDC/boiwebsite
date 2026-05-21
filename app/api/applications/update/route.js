@@ -45,8 +45,9 @@ export async function POST(request) {
     reviewerName: reviewerName ?? null,
   };
 
-  // Keep existing TTL — re-set with same key and 60-day TTL
-  await db.set(`app:${appId.toUpperCase()}`, JSON.stringify(updated), { KEEPTTL: true });
+  // Keep existing TTL
+  await db.set(`app:${appId.toUpperCase()}`, JSON.stringify(updated), { keepTTL: true });
 
+  console.log(`[APP STATUS] Updated app:${appId} to ${status}`);
   return NextResponse.json({ ok: true });
 }
