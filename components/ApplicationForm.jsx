@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Send, AlertCircle, CheckCircle, LogOut } from 'lucide-react';
+import { Send, AlertCircle, CheckCircle, LogOut, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
 
 const EMPTY = {
@@ -17,6 +17,7 @@ export default function ApplicationForm() {
   const [form, setForm]                   = useState(EMPTY);
   const [errors, setErrors]               = useState({});
   const [submitted, setSubmitted]         = useState(false);
+  const [appId,     setAppId]             = useState(null);
   const [loading, setLoading]             = useState(false);
   const [pastedContent, setPastedContent] = useState({});
 
@@ -75,6 +76,8 @@ export default function ApplicationForm() {
         const data = await res.json().catch(() => ({}));
         throw Object.assign(new Error('server'), { serverMsg: data.error });
       }
+      const data = await res.json();
+      if (data.appId) setAppId(data.appId);
       setSubmitted(true);
     } catch (err) {
       if (err.message === 'auth') {
@@ -148,6 +151,27 @@ export default function ApplicationForm() {
               Your submission has been logged. Bureau leadership will review your file.
               You will automatically join our discord and receive a DM if accepted.
             </p>
+
+            {appId && (
+              <div className="mt-6 border border-boi-border bg-boi-bg p-4 text-left space-y-2">
+                <p className="font-mono text-[9px] tracking-widest text-boi-muted uppercase">
+                  Application ID
+                </p>
+                <p className="font-mono text-sm text-boi-gold font-bold tracking-wider">{appId}</p>
+                <a
+                  href={`/application/${appId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest uppercase text-boi-muted hover:text-boi-gold transition-colors"
+                >
+                  View Status Page <ExternalLink size={10} />
+                </a>
+                <p className="font-mono text-[9px] text-boi-muted/50">
+                  Save this ID to check your application status at any time.
+                </p>
+              </div>
+            )}
+
             <p className="font-mono text-[10px] tracking-widest text-boi-gold uppercase mt-6">
               // STAND BY FOR CONTACT
             </p>
