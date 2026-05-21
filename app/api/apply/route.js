@@ -1,4 +1,3 @@
-
 import { createClient } from 'redis';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -49,17 +48,45 @@ export async function POST(request) {
   const body = await request.json();
   const { age, rank, experience, reason, additional, pastedContent = {} } = body;
 
-  // Wrap any pasted substrings with Discord underline markdown
+  // Wrap any pasted substrings with Discord bold markdown, merging adjacent/overlapping regions
   function markPasted(fieldName, text) {
     const pastes = pastedContent[fieldName];
     if (!pastes?.length || !text) return text;
-    let result = text;
+
+    // Collect all [start, end) ranges for every occurrence of every pasted string
+    const ranges = [];
     for (const pasted of pastes) {
       if (!pasted) continue;
-      // Escape special regex chars in the pasted string
       const escaped = pasted.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      result = result.replace(new RegExp(escaped, 'g'), `**${pasted}**`);
+      const re = new RegExp(escaped, 'g');
+      let m;
+      while ((m = re.exec(text)) !== null) {
+        ranges.push([m.index, m.index + pasted.length]);
+      }
     }
+    if (!ranges.length) return text;
+
+    // Sort and merge overlapping or adjacent ranges
+    ranges.sort((a, b) => a[0] - b[0]);
+    const merged = [ranges[0]];
+    for (let i = 1; i < ranges.length; i++) {
+      const last = merged[merged.length - 1];
+      if (ranges[i][0] <= last[1]) {
+        last[1] = Math.max(last[1], ranges[i][1]);
+      } else {
+        merged.push(ranges[i]);
+      }
+    }
+
+    // Rebuild string with bold markers around merged ranges
+    let result = '';
+    let cursor = 0;
+    for (const [start, end] of merged) {
+      result += text.slice(cursor, start);
+      result += `**${text.slice(start, end)}**`;
+      cursor = end;
+    }
+    result += text.slice(cursor);
     return result;
   }
 
