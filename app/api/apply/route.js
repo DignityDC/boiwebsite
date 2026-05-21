@@ -47,7 +47,21 @@ export async function POST(request) {
   const encryptedToken = accessToken ? encryptToken(accessToken) : '';
 
   const body = await request.json();
-  const { age, rank, experience, reason, additional, pastedFields = [] } = body;
+  const { age, rank, experience, reason, additional, pastedContent = {} } = body;
+
+  // Wrap any pasted substrings with Discord underline markdown
+  function markPasted(fieldName, text) {
+    const pastes = pastedContent[fieldName];
+    if (!pastes?.length || !text) return text;
+    let result = text;
+    for (const pasted of pastes) {
+      if (!pasted) continue;
+      // Escape special regex chars in the pasted string
+      const escaped = pasted.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      result = result.replace(new RegExp(escaped, 'g'), `__${pasted}__`);
+    }
+    return result;
+  }
 
   const botToken   = process.env.DISCORD_BOT_TOKEN;
   const channelId  = process.env.APPLICATION_CHANNEL_ID;
@@ -88,22 +102,22 @@ export async function POST(request) {
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
         {
           type:    C.TEXT,
-          content: `**Age:** ${age || 'N/A'}\n**Current Rank / Role:** ${rank || 'N/A'}`,
+          content: `**Age:** ${markPasted('age', age) || 'N/A'}\n**Current Rank / Role:** ${markPasted('rank', rank) || 'N/A'}`,
         },
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
         {
           type:    C.TEXT,
-          content: `**Operational Experience**\n${experience || 'N/A'}`,
+          content: `**Operational Experience**\n${markPasted('experience', experience) || 'N/A'}`,
         },
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
         {
           type:    C.TEXT,
-          content: `**Why do you want to join?**\n${reason || 'N/A'}`,
+          content: `**Why do you want to join?**\n${markPasted('reason', reason) || 'N/A'}`,
         },
         ...(additional?.trim()
           ? [
               { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
-              { type: C.TEXT, content: `**Additional Information**\n${additional}` },
+              { type: C.TEXT, content: `**Additional Information**\n${markPasted('additional', additional)}` },
             ]
           : []),
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
@@ -112,9 +126,10 @@ export async function POST(request) {
           type:    C.TEXT,
           content: (() => {
             const fieldLabels = { age: 'Age', rank: 'Rank', experience: 'Experience', reason: 'Reason', additional: 'Additional' };
-            if (pastedFields.length === 0) return '**Copy-Paste Detected:** ✅ None';
-            const names = pastedFields.map((f) => fieldLabels[f] ?? f).join(', ');
-            return `**Copy-Paste Detected:** ⚠️ Yes — ${names}`;
+            const pastedKeys = Object.keys(pastedContent).filter((k) => pastedContent[k]?.length);
+            if (pastedKeys.length === 0) return '**Copy-Paste Detected:** ✅ None';
+            const names = pastedKeys.map((f) => fieldLabels[f] ?? f).join(', ');
+            return `**Copy-Paste Detected:** ⚠️ Yes — ${names} (pasted text is __underlined__ above)`;
           })(),
         },
         { type: C.SEPARATOR, divider: true, spacing: SPACING_SMALL },
