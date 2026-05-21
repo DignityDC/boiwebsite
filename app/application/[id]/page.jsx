@@ -37,7 +37,7 @@ const STATUS_CONFIG = {
     color:       'border-green-400/30 bg-green-400/5',
     iconBg:      'bg-green-400/10 border-green-400/30',
     labelColor:  'text-green-400',
-    description: 'Congratulations — your application has been accepted. You should have received a DM with next steps.',
+    description: 'Congratulations, your application has been accepted. You should have received a DM with next steps.',
   },
   denied: {
     icon:        <XCircle size={40} className="text-red-400" />,
