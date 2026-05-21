@@ -12,6 +12,7 @@ const links = [
   { href: '#process',      label: 'Join Process', scroll: true },
   { href: '/sop',          label: 'SOPs',        scroll: false },
   { href: '#apply',        label: 'Apply',       scroll: true  },
+  { href: '/report',       label: 'Report',      scroll: false },
 ];
 
 export default function Navbar() {
