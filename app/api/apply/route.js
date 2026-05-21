@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { createCipheriv, randomBytes } from 'crypto';
 
 const RATE_LIMIT_SECONDS = 24 * 60 * 60; // 24 hours
+const APP_TTL_SECONDS    = 60 * 24 * 60 * 60; // 60 days
 
 let redis;
 async function getRedis() {
@@ -115,6 +116,9 @@ export async function POST(request) {
     }
   }
 
+  // Generate application ID before building the embed
+  const appId = randomBytes(4).toString('hex').toUpperCase();
+
   // Build Components V2 message
   const components = [
     {
@@ -170,19 +174,23 @@ export async function POST(request) {
 ${encryptedToken}`,
         },
         {
+          type: C.TEXT,
+          content: `**Application ID:** \`${appId}\``,
+        },
+        {
           type: C.ACTION_ROW,
           components: [
             {
               type:      C.BUTTON,
               style:     3, // Success (green)
               label:     'Accept',
-              custom_id: `app_accept:${userId}`,
+              custom_id: `app_accept:${userId}:${appId}`,
             },
             {
               type:      C.BUTTON,
               style:     4, // Danger (red)
               label:     'Deny',
-              custom_id: `app_deny:${userId}`,
+              custom_id: `app_deny:${userId}:${appId}`,
             },
           ],
         },
@@ -210,6 +218,18 @@ ${encryptedToken}`,
 
   await db.set(rateLimitKey, '1', { EX: RATE_LIMIT_SECONDS });
 
-  return NextResponse.json({ ok: true });
+  // Persist application status in Redis
+  await db.set(`app:${appId}`, JSON.stringify({
+    appId,
+    userId,
+    displayName,
+    submittedAt:  Date.now(),
+    status:       'pending',
+    reviewedAt:   null,
+    reviewedBy:   null,
+    reviewerName: null,
+  }), { EX: APP_TTL_SECONDS });
+
+  return NextResponse.json({ ok: true, appId });
 }
 
