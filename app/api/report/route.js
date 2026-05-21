@@ -75,15 +75,25 @@ export async function POST(request) {
     timestamp: new Date().toISOString(),
   };
 
-  const button = {
+  const components = [{
     type: 1,
-    components: [{
-      type:      2,
-      style:     4,
-      label:     'Open Ticket',
-      custom_id: `report_open_ticket:${reportedId}`,
-    }],
-  };
+    components: [
+      {
+        type:      2,
+        style:     4,
+        label:     'Open Ticket',
+        custom_id: `report_open_ticket:${reportedId}`,
+      },
+      {
+        type:      2,
+        style:     2,
+        label:     'False Report',
+        custom_id: 'report_false_report',
+      },
+    ],
+  }];
+
+  const pingContent = '<@&1488519221972303914> <@&1488519183552479333>';
 
   // Filter to valid image files (guard against empty File entries)
   const validImages = imageFiles.filter(
@@ -95,8 +105,9 @@ export async function POST(request) {
     // Send as multipart/form-data so Discord accepts file attachments
     const discordFd = new FormData();
     discordFd.append('payload_json', JSON.stringify({
+      content:    pingContent,
       embeds:     [embed],
-      components: [button],
+      components,
     }));
     validImages.forEach((img, i) => {
       discordFd.append(`files[${i}]`, img, img.name);
@@ -117,7 +128,7 @@ export async function POST(request) {
       {
         method:  'POST',
         headers,
-        body:    JSON.stringify({ embeds: [embed], components: [button] }),
+        body:    JSON.stringify({ content: pingContent, embeds: [embed], components }),
       }
     );
   }
